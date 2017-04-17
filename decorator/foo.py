@@ -10,15 +10,17 @@ def call_foo_with_arg(functor, arg):
 
 @decorator.decorate
 def print_func():
-    print("Printing from parent() function!")
+    print("<print_func> ENTERING...")
 
-    def first_child():
-        print("Printing from first_child() function!")
-    def second_child():
-        print("Printing from second_child() function!")
+    def nested_func_first():
+        return '[nested_func_first] TRACE'
 
-    print(first_child());
-    print(second_child());
+    def nested_func_second():
+        return '[nested_func_second] TRACE'
+
+    print(nested_func_first());
+    print(nested_func_second());
+    print("<print_func> EXITING...")
 
 if __name__ == "__main__":
     print('inc(2)==3 -> {}'.format(inc(2) == 3))

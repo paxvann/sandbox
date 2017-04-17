@@ -8,9 +8,9 @@ def decorate(functor):
     """
 
     def wrapper():
-        print("You: ")
+        print("[decorator] Calling functor...")
         functor()
-        print("... have been decorated!!")
+        print("... functor decorated!!")
 
     return wrapper
 
