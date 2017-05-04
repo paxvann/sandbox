@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'polls'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -58,8 +59,16 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('POSTGRES__DB_NAME', 'blah'),
+#        'NAME': 'ars',
+        'USER': 'ars',
+        'PASSWORD': os.environ.get('POSTGRES__USER_PASS', 'ars123moim1234'),
+        'HOST': os.environ.get('POSTGRES__HOST', '127.0.0.1'),
+#        'PORT': os.environ.get('POSTGRES__PORT', '6432'),
+        'PORT': '5432',
     }
 }
 
@@ -68,7 +77,8 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+#TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Vancouver'
 
 USE_I18N = True
 
