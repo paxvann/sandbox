@@ -20,3 +20,4 @@ admin.site.register(Question, QuestionAdmin)
 admin.site.register(Choice)
 
 # to a new branch
+# Edited on root/master branch
