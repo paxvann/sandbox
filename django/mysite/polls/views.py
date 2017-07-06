@@ -1,35 +1,48 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.http import Http404
-
-from django.template import RequestContext
-from django.template import loader
+from django.views import generic
 
 from polls.models import Question, Choice
 
 
-def index(request):
-    """ Display the root page to of the URL .../polls/
-    :param request:
-    :return:
-    """
-    latest_question_list = Question.objects.order_by('-publication_date')[:5]
+#def index(request):
+#    """ Display the root page to of the URL .../polls/
+#    :param request:
+#    :return HttpResponse :
+#    """
+#    latest_question_list = Question.objects.order_by('-publication_date')[:5]
+
+    # from django.template import RequestContext
+    # from django.template import loader
+
     # template = loader.get_template('polls/index.html')
     # context_instance = RequestContext(request, {
     #     'latest_question_list' : latest_question_list,
     # })
     #output = '| '.join([p.question_text for p in latest_question_list])
     # return HttpResponse(template.render(context_instance))
-    context_params = { 'latest_question_list' : latest_question_list }
-    return render(request, 'polls/index.html', context_params)
+
+#    context_params = { 'latest_question_list' : latest_question_list }
+#    return render(request, 'polls/index.html', context_params)
 
 
+class IndexView(generic.ListView):
+    template_name = 'polls/index.html'
+    context_object_name = 'latest_question_list'
+
+    def get_queryset(self):
+        """
+        :return: the last five published questions.
+        """
+        return Question.objects.order_by('-publication_date')[:5]
+
+'''
 def detail(request, question_id):
     """ Display the detail of a particular question.
     :param request: HttpRequest
     :param question_id: Integer
-    :return: 
+    :return HttpResponse:
     """
     # return HttpResponse("You're looking at question, id=%s." % question_id)
 #    try:
@@ -40,22 +53,23 @@ def detail(request, question_id):
 
     question = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/detail.html', {'question' : question})
+'''
 
-def results(request, question_id):
-    """
-    :param request: ditto
-    :param question_id: ditto
-    :return:
-    """
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'polls/results.html', {'question' : question} )
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = 'polls/detail.html'
+
+
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = 'polls/results.html'
 
 def vote(request, question_id):
     """ Handle the vote request.
 
     :param request:
     :param question_id:
-    :return:
+    :return HttpResponse:
     """
     question = get_object_or_404(Question, pk=question_id)
     try:
